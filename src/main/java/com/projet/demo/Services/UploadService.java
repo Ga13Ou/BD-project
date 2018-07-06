@@ -33,7 +33,7 @@ public class UploadService {
 
     }
 
-    public Map<String, Object> store(MultipartFile file) {
+    public Map<String, Object> storeUtil(MultipartFile file, String savingPath ) {
         Map<String, Object> response = new HashMap<String, Object>();
         if (file.isEmpty()) {
             response.put("status", 1);
@@ -44,7 +44,7 @@ public class UploadService {
             try {
                 //storing the file
                 bytes = file.getBytes();
-                Path path = Paths.get(UPLOAD_FOLDER + file.getOriginalFilename());
+                Path path = Paths.get(savingPath);
                 Files.write(path, bytes);
                 System.out.println(path);
                 response.put("status", 0);
@@ -59,6 +59,12 @@ public class UploadService {
         }
 
         return response;
+
+    }
+
+    //this method is for local file upload testing
+    public Map<String, Object> store(MultipartFile file){
+        return this.storeUtil(file,UPLOAD_FOLDER + file.getOriginalFilename());
 
     }
     public Map<String,Object> storeAndIndex(MultipartFile file, AudiPFE audiPFE){
