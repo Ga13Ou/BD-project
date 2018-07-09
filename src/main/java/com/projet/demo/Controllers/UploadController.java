@@ -1,6 +1,9 @@
 package com.projet.demo.Controllers;
 
-import com.projet.demo.Models.AudiPFE;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projet.demo.Models.Evenement;
+import com.projet.demo.Models.Projet;
+import com.projet.demo.Models.Stage;
 import com.projet.demo.Services.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,8 @@ public class UploadController {
 
     @Autowired
     UploadService uploadService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     //TODO methode to remove after test
 @GetMapping("")
@@ -24,11 +29,37 @@ public class UploadController {
 }
 
 @PostMapping("")
-    public ResponseEntity upload(@RequestPart("file")MultipartFile file, @RequestPart("request") AudiPFE audiPFE){
-    Map<String,Object> response=uploadService.storeAndIndex(file,audiPFE);
-   System.out.println(audiPFE);
+    public ResponseEntity upload(@RequestPart("file")MultipartFile file, @RequestPart("request") Stage stage){
+    Map<String,Object> response=uploadService.storeAndIndex(file, stage);
+   System.out.println(stage);
 
     return new ResponseEntity(response,HttpStatus.OK);
+}
+
+@PostMapping("/BD_Docs")
+    public ResponseEntity addDoc(@RequestPart("file")MultipartFile file, @RequestPart("request") Map<String,Object> request){
+    String requestType=(String)request.get("docType");
+    if(requestType!=null && !requestType.isEmpty()){
+        if(requestType.equals("stage")){
+            Stage tmp=objectMapper.convertValue(request.get("requestBody"),Stage.class);
+            Map<String,Object> response=uploadService.addStage(tmp,file);
+            return new ResponseEntity(response,HttpStatus.OK);
+        }
+        else if(requestType.equals("projet")){
+            Projet tmp=objectMapper.convertValue(request.get("requestBody"),Projet.class);
+            Map<String,Object> response=uploadService.addProjet(tmp,file);
+            return new ResponseEntity(response,HttpStatus.OK);
+        }
+        else if(requestType.equals("evenement")){
+            Evenement tmp=objectMapper.convertValue(request.get("requestBody"),Evenement.class);
+            Map<String,Object> response=uploadService.addEvenement(tmp,file);
+            return new ResponseEntity(response,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+    return new ResponseEntity(HttpStatus.BAD_REQUEST);
 }
 
 }

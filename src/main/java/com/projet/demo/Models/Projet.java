@@ -6,25 +6,25 @@ import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Projet {
-    private String id;
+    private String _id;
     private String type;
-    private String nom;
     private String description;
     private String categorie;
     private String client;
     private String duree;
-    private String chefDuProjet;
-    private Employe [] equipe;
+    private Person chefDuProjet;
+    private String equipe;
     private User uploadedBy;
     private Date uploadDate;
-    private String documentPath;
+    private String path;
+    private String file;
 
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getType() {
@@ -33,14 +33,6 @@ public class Projet {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
 
     public String getDescription() {
@@ -75,19 +67,19 @@ public class Projet {
         this.duree = duree;
     }
 
-    public String getChefDuProjet() {
+    public Person getChefDuProjet() {
         return chefDuProjet;
     }
 
-    public void setChefDuProjet(String chefDuProjet) {
+    public void setChefDuProjet(Person chefDuProjet) {
         this.chefDuProjet = chefDuProjet;
     }
 
-    public Employe[] getEquipe() {
+    public String getEquipe() {
         return equipe;
     }
 
-    public void setEquipe(Employe[] equipe) {
+    public void setEquipe(String equipe) {
         this.equipe = equipe;
     }
 
@@ -107,11 +99,19 @@ public class Projet {
         this.uploadDate = uploadDate;
     }
 
-    public String getDocumentPath() {
-        return documentPath;
+    public String getPath() {
+        return path;
     }
 
-    public void setDocumentPath(String documentPath) {
-        this.documentPath = documentPath;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 }

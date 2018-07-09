@@ -6,29 +6,30 @@ import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Evenement {
-    private String id;
-    private String nom;
+    private String _id;
+    private String theme;
     private Date date;
     private String description;
     private String tags;
     private String uploadedBy;
     private Date uploadDate;
-    private String documentPath;
+    private String path;
+    private String file;   //encoded in base64
 
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
-    public String getNom() {
-        return nom;
+    public String getTheme() {
+        return theme;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 
     public Date getDate() {
@@ -71,11 +72,19 @@ public class Evenement {
         this.uploadDate = uploadDate;
     }
 
-    public String getDocumentPath() {
-        return documentPath;
+    public String getPath() {
+        return path;
     }
 
-    public void setDocumentPath(String documentPath) {
-        this.documentPath = documentPath;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 }
