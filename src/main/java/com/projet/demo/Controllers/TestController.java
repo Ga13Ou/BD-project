@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/")
 public class TestController {
 
     @Autowired
     UserService userService;
-
+@GetMapping("/")
+public String Hello(){
+    return "application is working";
+}
     @GetMapping("/{id}")
     public Map<String, Object> testGet(@PathVariable String id){
         return userService.getUserById(id);
