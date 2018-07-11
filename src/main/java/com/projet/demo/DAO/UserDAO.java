@@ -38,6 +38,7 @@ public class UserDAO {
             System.out.println("this is the id: "+u.getId());
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
+            e.printStackTrace();
 
         } catch (IOException ex) {
             ex.getLocalizedMessage();

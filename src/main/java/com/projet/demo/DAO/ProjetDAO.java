@@ -35,7 +35,7 @@ public class ProjetDAO {
             System.out.println("this is the id: "+ projet.get_id());
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
-
+            e.printStackTrace();
         } catch (IOException ex) {
             ex.getLocalizedMessage();
         }

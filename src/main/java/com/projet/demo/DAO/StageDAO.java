@@ -29,14 +29,17 @@ public class StageDAO {
         IndexRequest indexRequest = new IndexRequest(INDEX, TYPE, stage.get_id()).source(dataMap);
         try {
             IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
+            System.out.println(indexResponse);
             //TODO remove this log after test
             System.out.println("this is the id: "+ stage.get_id());
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
+            e.printStackTrace();
 
         } catch (IOException ex) {
             ex.getLocalizedMessage();
         }
+
         return stage;
 
 

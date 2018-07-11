@@ -107,6 +107,7 @@ public class UploadService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            System.out.println("im here");
             response.put("ES_Response", stageDAO.indexDocument(stage));   //TODO remove the base64 content in the response
         }
 
