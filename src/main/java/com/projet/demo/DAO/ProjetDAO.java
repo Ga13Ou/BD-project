@@ -56,6 +56,7 @@ public class ProjetDAO {
         } catch (IOException ex) {
             ex.getLocalizedMessage();
         }
+        projet.setFile(null);
         return projet;
 
 

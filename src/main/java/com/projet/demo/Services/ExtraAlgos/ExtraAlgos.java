@@ -13,7 +13,6 @@ ObjectMapper objectMapper;
     //get an object when the key is like this "key1.key2.key3"
     public String getDeepKeyFromMap(Map<String,Object> map,String compositeKey){
         String [] deepKey=compositeKey.split("\\.");    //escaping the "." cause it  means any char in regex
-        System.out.println(compositeKey);
         if(deepKey.length==1){
             return (String) map.get(deepKey[0]);
         }

@@ -55,6 +55,7 @@ public class EvenementDAO {
         } catch (IOException ex) {
             ex.getLocalizedMessage();
         }
+        evenement.setFile(null);
         return evenement;
 
 

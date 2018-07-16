@@ -92,7 +92,7 @@ public class UploadService {
             }
         }
 
-        response.put("ES_Response", stageDAO.indexDocument(stage));   //TODO remove the base64 content in the response
+        response.put("ES_Response", stageDAO.indexDocument(stage));
         return response;
     }
 
@@ -110,8 +110,7 @@ public class UploadService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("im here");
-            response.put("ES_Response", stageDAO.indexDocument(stage));   //TODO remove the base64 content in the response
+            response.put("ES_Response", stageDAO.indexDocument(stage));
         }
 
         return response;
@@ -132,7 +131,7 @@ public class UploadService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            response.put("ES_Response", projetDAO.indexDocument(projet));   //TODO remove the base64 content in the response
+            response.put("ES_Response", projetDAO.indexDocument(projet));
         }
 
         return response;
@@ -153,7 +152,7 @@ public class UploadService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            response.put("ES_Response", evenementDAO.indexDocument(evenement));   //TODO remove the base64 content in the response
+            response.put("ES_Response", evenementDAO.indexDocument(evenement));
         }
 
         return response;
