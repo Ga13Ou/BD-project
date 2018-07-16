@@ -13,7 +13,7 @@ public class Evenement {
     private Date date;
     private String description;
     private String tags;
-    private String uploadedBy;
+    private Person uploadedBy;
     private Date uploadDate;
     private String path;
     private String file;   //encoded in base64
@@ -58,11 +58,11 @@ public class Evenement {
         this.tags = tags;
     }
 
-    public String getUploadedBy() {
+    public Person getUploadedBy() {
         return uploadedBy;
     }
 
-    public void setUploadedBy(String uploadedBy) {
+    public void setUploadedBy(Person uploadedBy) {
         this.uploadedBy = uploadedBy;
     }
 

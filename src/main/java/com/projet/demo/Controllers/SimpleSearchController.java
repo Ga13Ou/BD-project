@@ -20,5 +20,9 @@ public class SimpleSearchController {
         return new ResponseEntity(resp,HttpStatus.OK);
 
     }
+    @PostMapping("/Advanced")
+    public ResponseEntity advancedSearch(@RequestBody Map<String,Object> data){
+        return searchService.fullSearch(data);
+    }
 
 }

@@ -17,7 +17,7 @@ public class Projet {
     private String duree;
     private Person chefDuProjet;
     private String equipe;
-    private User uploadedBy;
+    private Person uploadedBy;
     private Date uploadDate;
     private String path;
     private String file;
@@ -86,11 +86,11 @@ public class Projet {
         this.equipe = equipe;
     }
 
-    public User getUploadedBy() {
+    public Person getUploadedBy() {
         return uploadedBy;
     }
 
-    public void setUploadedBy(User uploadedBy) {
+    public void setUploadedBy(Person uploadedBy) {
         this.uploadedBy = uploadedBy;
     }
 

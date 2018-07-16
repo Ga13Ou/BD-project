@@ -26,7 +26,7 @@ public class Stage {
     private String path;
     private String file;   //encoded in base64
     private Date uploadDate;
-    private User uploadedBy;
+    private Person uploadedBy;
 
     public String get_id() {
         return _id;
@@ -164,11 +164,11 @@ public class Stage {
         this.uploadDate = uploadDate;
     }
 
-    public User getUploadedBy() {
+    public Person getUploadedBy() {
         return uploadedBy;
     }
 
-    public void setUploadedBy(User uploadedBy) {
+    public void setUploadedBy(Person uploadedBy) {
         this.uploadedBy = uploadedBy;
     }
 }

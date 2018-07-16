@@ -1,29 +1,43 @@
 package com.projet.demo.DAO;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projet.demo.Models.ElasticSearch.ESHit;
 import com.projet.demo.Models.Stage;
+import com.projet.demo.Services.ExtraAlgos.ExtraAlgos;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public class StageDAO {
-    private final String INDEX = "bd_search_engine";
+    @Value("${ES.AppIndex}")
+    private String INDEX;
     private final String TYPE = "students_docs";
 
     @Autowired
     private RestHighLevelClient restHighLevelClient;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private ExtraAlgos extraAlgos;
 
-    public Stage indexDocument(Stage stage){
+    public Stage indexDocument(Stage stage) {
         stage.set_id(UUID.randomUUID().toString());
         Map dataMap = objectMapper.convertValue(stage, Map.class);
         IndexRequest indexRequest = new IndexRequest(INDEX, TYPE, stage.get_id()).source(dataMap);
@@ -31,7 +45,7 @@ public class StageDAO {
             IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
             System.out.println(indexResponse);
             //TODO remove this log after test
-            System.out.println("this is the id: "+ stage.get_id());
+            System.out.println("this is the id: " + stage.get_id());
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
             e.printStackTrace();
@@ -42,6 +56,64 @@ public class StageDAO {
 
         return stage;
 
+
+    }
+
+    public ResponseEntity fullSearchStage(Map<String, Object> data) {
+        String[] matchArray = {"intituleSujet", "objectifProjet",
+                "contexteProblematique", "retombeesAttendues", "file"}; //TODO change "file" attribute
+        String[] termArray = {"type", "etablissement", "candidat.nom", "candidat.prenom", "domainePrincipal"
+                , "technologie", "encadreurUniversitaire", "encadreurEntreprise", "uploadedBy.nom", "uploadBy.prenom"};
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        searchRequest.types(TYPE);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder bool = new BoolQueryBuilder();
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        for (String a : matchArray) {
+
+            if (extraAlgos.getDeepKeyFromMap(data, a) != null) {
+                MatchPhrasePrefixQueryBuilder matchQuery = new MatchPhrasePrefixQueryBuilder(a, extraAlgos.getDeepKeyFromMap(data, a));
+                bool.must(matchQuery);
+                highlightBuilder.field(a, 500, 4);
+
+            }
+        }
+        for (String b : termArray) {
+            if (extraAlgos.getDeepKeyFromMap(data, b) != null) {
+                TermQueryBuilder termQuery = new TermQueryBuilder(b, extraAlgos.getDeepKeyFromMap(data, b));
+                bool.filter(termQuery);
+                //TODO check for "note" attribute to convert it to int if it causes problem as a String
+            }
+        }
+        searchSourceBuilder.query(bool);
+        String[] excludeFields = new String[]{"file"};
+        String[] includeFields = new String[]{};
+        searchSourceBuilder.fetchSource(includeFields, excludeFields);
+        searchSourceBuilder.highlighter(highlightBuilder);
+
+        searchRequest.source(searchSourceBuilder);
+        Map<String, Object> responseES = new HashMap<String, Object>();
+        try {
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
+            SearchHits hits = searchResponse.getHits();
+            ArrayList<ESHit> responseHit = new ArrayList<ESHit>();
+            //getting hits
+            for (SearchHit hit : hits.getHits()) {
+                ESHit tmp = new ESHit();
+                tmp.init(hit);
+                responseHit.add(tmp);
+            }
+            //preparing response
+            responseES.put("status", 0);
+            responseES.put("body", responseHit);
+            //sending response
+            return new ResponseEntity(responseES, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            responseES.put("status", 1);
+            responseES.put("message", "Problem connecting to the DB");
+            return new ResponseEntity<Map<String, Object>>(responseES, HttpStatus.OK);
+        }
 
     }
 }
