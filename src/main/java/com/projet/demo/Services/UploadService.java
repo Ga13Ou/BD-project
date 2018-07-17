@@ -104,8 +104,8 @@ public class UploadService {
             try {
                 //Encoding the file to base 64
                 bytes = file.getBytes();
-               /* String encodedFile = Base64Utils.encodeToString(bytes);*/ //TODO use this before deploying to the server running mapper-attachment
-                String encodedFile=documentContentService.getDocumentContent(bytes);
+                String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
+                /*String encodedFile=documentContentService.getDocumentContent(bytes);*/
                 stage.setFile(encodedFile);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -125,8 +125,8 @@ public class UploadService {
             try {
                 //Encoding the file to base 64
                 bytes = file.getBytes();
-                /* String encodedFile = Base64Utils.encodeToString(bytes);*/ //TODO use this before deploying to the server running mapper-attachment
-                String encodedFile=documentContentService.getDocumentContent(bytes);
+                 String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
+                /*String encodedFile=documentContentService.getDocumentContent(bytes);*/
                 projet.setFile(encodedFile);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -146,8 +146,8 @@ public class UploadService {
             try {
                 //Encoding the file to base 64
                 bytes = file.getBytes();
-                /* String encodedFile = Base64Utils.encodeToString(bytes);*/ //TODO use this before deploying to the server running mapper-attachment
-                String encodedFile=documentContentService.getDocumentContent(bytes);
+                 String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
+                /*String encodedFile=documentContentService.getDocumentContent(bytes);*/
                 evenement.setFile(encodedFile);
             } catch (IOException e) {
                 e.printStackTrace();

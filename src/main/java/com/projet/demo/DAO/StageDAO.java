@@ -61,7 +61,7 @@ public class StageDAO {
 
     public ResponseEntity fullSearchStage(Map<String, Object> data) {
         String[] matchArray = {"intituleSujet", "objectifProjet",
-                "contexteProblematique", "retombeesAttendues", "file"}; //TODO change "file" attribute
+                "contexteProblematique", "retombeesAttendues", "file.content"}; //TODO change "file" attribute
         String[] termArray = {"type", "etablissement", "candidat.nom", "candidat.prenom", "domainePrincipal"
                 , "technologie", "encadreurUniversitaire", "encadreurEntreprise", "uploadedBy.nom", "uploadBy.prenom","note"};
         SearchRequest searchRequest = new SearchRequest(INDEX);

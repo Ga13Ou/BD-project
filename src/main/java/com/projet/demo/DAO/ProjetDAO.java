@@ -62,7 +62,7 @@ public class ProjetDAO {
 
     }
     public ResponseEntity fullSearchProjet(Map<String, Object> data) {
-        String[] matchArray = {"description", "file"}; //TODO change "file" attribute
+        String[] matchArray = {"description", "file.content"}; //TODO change "file" attribute
         String[] termArray = {"type", "categorie", "client", "duree"
                 , "chefDuProjet", "equipe", "uploadedBy.nom", "uploadedBy.prenom"};
         SearchRequest searchRequest = new SearchRequest(INDEX);

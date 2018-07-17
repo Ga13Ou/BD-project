@@ -40,17 +40,17 @@ public class UploadController {
     public ResponseEntity addDoc(@RequestPart("file")MultipartFile file, @RequestPart("request") Map<String,Object> request){
     String requestType=(String)request.get("docType");
     if(requestType!=null && !requestType.isEmpty()){
-        if(requestType.equals("stage")){
+        if(requestType.equalsIgnoreCase("stage")){
             Stage tmp=objectMapper.convertValue(request.get("requestBody"),Stage.class);
             Map<String,Object> response=uploadService.addStage(tmp,file);
             return new ResponseEntity(response,HttpStatus.OK);
         }
-        else if(requestType.equals("projet")){
+        else if(requestType.equalsIgnoreCase("projet")){
             Projet tmp=objectMapper.convertValue(request.get("requestBody"),Projet.class);
             Map<String,Object> response=uploadService.addProjet(tmp,file);
             return new ResponseEntity(response,HttpStatus.OK);
         }
-        else if(requestType.equals("evenement")){
+        else if(requestType.equalsIgnoreCase("evenement")){
             Evenement tmp=objectMapper.convertValue(request.get("requestBody"),Evenement.class);
             Map<String,Object> response=uploadService.addEvenement(tmp,file);
             return new ResponseEntity(response,HttpStatus.OK);

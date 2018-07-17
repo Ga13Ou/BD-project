@@ -63,7 +63,7 @@ public class EvenementDAO {
 
     public ResponseEntity fullSearchEvenement(Map<String, Object> data) {
         String[] matchArray = {"theme", "description",
-                "tags", "file"}; //TODO change "file" attribute
+                "tags", "file.content"}; //TODO change "file" attribute
         String[] termArray = {"uploadedBy.nom", "uploadBy.prenom"};
         SearchRequest searchRequest = new SearchRequest(INDEX);
         searchRequest.types(TYPE);
