@@ -6,6 +6,7 @@ import com.projet.demo.DAO.StageDAO;
 import com.projet.demo.Models.Evenement;
 import com.projet.demo.Models.Projet;
 import com.projet.demo.Models.Stage;
+import com.projet.demo.Services.ExtraAlgos.ExtraAlgos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ public class UploadService {
     private EvenementDAO evenementDAO;
     @Autowired
     private DocumentContentService documentContentService;
+    @Autowired
+    private ExtraAlgos extraAlgos;
 
     //TODO methode to remove after test
     public void test() {
@@ -47,7 +50,12 @@ public class UploadService {
             response.put("status", 1);
             response.put("Message", "no file uploaded");
             return response;
-        } else {
+        } else if (!extraAlgos.isAllowed(file)){
+            response.put("status", 3);
+            response.put("Message", "this type of files is not allowed");
+            return response;
+        }
+        else{
             byte[] bytes;
             try {
                 //storing the file
@@ -125,7 +133,7 @@ public class UploadService {
             try {
                 //Encoding the file to base 64
                 bytes = file.getBytes();
-                 String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
+                String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
                 /*String encodedFile=documentContentService.getDocumentContent(bytes);*/
                 projet.setFile(encodedFile);
             } catch (IOException e) {
@@ -146,7 +154,7 @@ public class UploadService {
             try {
                 //Encoding the file to base 64
                 bytes = file.getBytes();
-                 String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
+                String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
                 /*String encodedFile=documentContentService.getDocumentContent(bytes);*/
                 evenement.setFile(encodedFile);
             } catch (IOException e) {
