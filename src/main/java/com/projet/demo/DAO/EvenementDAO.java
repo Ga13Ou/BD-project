@@ -45,6 +45,7 @@ public class EvenementDAO {
         evenement.set_id(UUID.randomUUID().toString());
         Map dataMap = objectMapper.convertValue(evenement, Map.class);
         IndexRequest indexRequest = new IndexRequest(INDEX, TYPE, evenement.get_id()).source(dataMap);
+        indexRequest.setPipeline("attachment");
         try {
             IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
             //TODO remove this log after test
@@ -63,7 +64,7 @@ public class EvenementDAO {
 
     public ResponseEntity fullSearchEvenement(Map<String, Object> data) {
         String[] matchArray = {"theme", "description",
-                "tags", "file.content"}; //TODO change "file" attribute
+                "tags", "attachment.content","attachment.title"}; //TODO change "file" attribute
         String[] termArray = {"uploadedBy.nom", "uploadBy.prenom"};
         SearchRequest searchRequest = new SearchRequest(INDEX);
         searchRequest.types(TYPE);
@@ -87,7 +88,7 @@ public class EvenementDAO {
             }
         }
         searchSourceBuilder.query(bool);
-        String[] excludeFields = new String[]{"file"};
+        String[] excludeFields = new String[]{"attachment.content","file"};
         String[] includeFields = new String[]{};
         searchSourceBuilder.fetchSource(includeFields, excludeFields);
         searchSourceBuilder.highlighter(highlightBuilder);

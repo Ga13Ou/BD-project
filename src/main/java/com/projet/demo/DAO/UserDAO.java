@@ -32,6 +32,7 @@ public class UserDAO {
 
         IndexRequest indexRequest = new IndexRequest(INDEX, TYPE, u.getId()).source(dataMap);
 
+
         try {
             IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
             //TODO remove this log after test

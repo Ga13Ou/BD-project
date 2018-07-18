@@ -41,6 +41,7 @@ public class StageDAO {
         stage.set_id(UUID.randomUUID().toString());
         Map dataMap = objectMapper.convertValue(stage, Map.class);
         IndexRequest indexRequest = new IndexRequest(INDEX, TYPE, stage.get_id()).source(dataMap);
+        indexRequest.setPipeline("attachment");
         try {
             IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
             System.out.println(indexResponse);
@@ -61,7 +62,7 @@ public class StageDAO {
 
     public ResponseEntity fullSearchStage(Map<String, Object> data) {
         String[] matchArray = {"intituleSujet", "objectifProjet",
-                "contexteProblematique", "retombeesAttendues", "file.content"}; //TODO change "file" attribute
+                "contexteProblematique", "retombeesAttendues",  "attachment.content","attachment.title"}; //TODO change "file" attribute
         String[] termArray = {"type", "etablissement", "candidat.nom", "candidat.prenom", "domainePrincipal"
                 , "technologie", "encadreurUniversitaire", "encadreurEntreprise", "uploadedBy.nom", "uploadBy.prenom","note"};
         SearchRequest searchRequest = new SearchRequest(INDEX);
@@ -70,7 +71,6 @@ public class StageDAO {
         BoolQueryBuilder bool = new BoolQueryBuilder();
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         for (String a : matchArray) {
-
             if (extraAlgos.getDeepKeyFromMap(data, a) != null) {
                 MatchPhrasePrefixQueryBuilder matchQuery = new MatchPhrasePrefixQueryBuilder(a, extraAlgos.getDeepKeyFromMap(data, a));
                 bool.must(matchQuery);
@@ -86,7 +86,7 @@ public class StageDAO {
             }
         }
         searchSourceBuilder.query(bool);
-        String[] excludeFields = new String[]{"file"};
+        String[] excludeFields = new String[]{"attachment.content","file"};
         String[] includeFields = new String[]{};
         searchSourceBuilder.fetchSource(includeFields, excludeFields);
         searchSourceBuilder.highlighter(highlightBuilder);

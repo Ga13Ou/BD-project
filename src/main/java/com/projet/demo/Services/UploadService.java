@@ -97,9 +97,9 @@ public class UploadService {
     }
 
     public Map<String, Object> addStage(Stage stage, MultipartFile file) {
-        Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "\\StageFiles\\" + file.getOriginalFilename());
+        Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "/StageFiles/" + file.getOriginalFilename());
         if (response.get("status").equals(new Integer(0))) {
-            stage.setPath(UPLOAD_FOLDER + "\\StageFiles\\" + file.getOriginalFilename());
+            stage.setPath(UPLOAD_FOLDER + "/StageFiles/" + file.getOriginalFilename());
             byte[] bytes;
             try {
                 //Encoding the file to base 64
@@ -118,9 +118,9 @@ public class UploadService {
     }
 
     public Map<String, Object> addProjet(Projet projet, MultipartFile file) {
-        Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "\\ProjetFiles\\" + file.getOriginalFilename());
+        Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "/ProjetFiles/" + file.getOriginalFilename());
         if (response.get("status").equals(new Integer(0))) {
-            projet.setPath(UPLOAD_FOLDER + "\\ProjetFiles\\" + file.getOriginalFilename());
+            projet.setPath(UPLOAD_FOLDER + "/ProjetFiles/" + file.getOriginalFilename());
             byte[] bytes;
             try {
                 //Encoding the file to base 64
@@ -139,9 +139,9 @@ public class UploadService {
     }
 
     public Map<String, Object> addEvenement(Evenement evenement, MultipartFile file) {
-        Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "\\EvenementFiles\\" + file.getOriginalFilename());
+        Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "/EvenementFiles/" + file.getOriginalFilename());
         if (response.get("status").equals(new Integer(0))) {
-            evenement.setPath(UPLOAD_FOLDER + "\\EvenementFiles\\" + file.getOriginalFilename());
+            evenement.setPath(UPLOAD_FOLDER + "/EvenementFiles/" + file.getOriginalFilename());
             byte[] bytes;
             try {
                 //Encoding the file to base 64

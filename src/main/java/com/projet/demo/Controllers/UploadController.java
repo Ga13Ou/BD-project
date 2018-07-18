@@ -39,7 +39,7 @@ public class UploadController {
 @PostMapping("/BD_Docs")
     public ResponseEntity addDoc(@RequestPart("file")MultipartFile file, @RequestPart("request") Map<String,Object> request){
     String requestType=(String)request.get("docType");
-    if(requestType!=null && !requestType.isEmpty()){
+    if(requestType!=null &&!file.isEmpty()&& !requestType.isEmpty()){
         if(requestType.equalsIgnoreCase("stage")){
             Stage tmp=objectMapper.convertValue(request.get("requestBody"),Stage.class);
             Map<String,Object> response=uploadService.addStage(tmp,file);

@@ -46,6 +46,7 @@ public class ProjetDAO {
         projet.set_id(UUID.randomUUID().toString());
         Map dataMap = objectMapper.convertValue(projet, Map.class);
         IndexRequest indexRequest = new IndexRequest(INDEX, TYPE, projet.get_id()).source(dataMap);
+        indexRequest.setPipeline("attachment");
         try {
             IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
             //TODO remove this log after test
@@ -62,7 +63,7 @@ public class ProjetDAO {
 
     }
     public ResponseEntity fullSearchProjet(Map<String, Object> data) {
-        String[] matchArray = {"description", "file.content"}; //TODO change "file" attribute
+        String[] matchArray = {"description", "attachment.content","attachment.title"}; //TODO change "file" attribute
         String[] termArray = {"type", "categorie", "client", "duree"
                 , "chefDuProjet", "equipe", "uploadedBy.nom", "uploadedBy.prenom"};
         SearchRequest searchRequest = new SearchRequest(INDEX);
@@ -88,7 +89,7 @@ public class ProjetDAO {
 
 
         searchSourceBuilder.query(bool);
-        String[] excludeFields = new String[]{"file"};
+        String[] excludeFields = new String[]{"attachment.content","file"};
         String[] includeFields = new String[]{};
         searchSourceBuilder.fetchSource(includeFields, excludeFields);
         searchSourceBuilder.highlighter(highlightBuilder);

@@ -16,6 +16,7 @@ public class TestController {
     UserService userService;
 @GetMapping("/")
 public String Hello(){
+    System.out.println("application is working!");
     return "application is working";
 }
     @GetMapping("/{id}")
