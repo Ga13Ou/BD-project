@@ -29,7 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
+/**
+ * this class is the Data Access Object for the model Projet
+ */
 @Repository
 public class ProjetDAO {
     private final String INDEX = "bd_search_engine";
@@ -49,8 +51,6 @@ public class ProjetDAO {
         indexRequest.setPipeline("attachment");
         try {
             IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
-            //TODO remove this log after test
-            System.out.println("this is the id: "+ projet.get_id());
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
             e.printStackTrace();
@@ -62,8 +62,17 @@ public class ProjetDAO {
 
 
     }
+    /**
+     * this is the method that executes the search for the projet documents
+     * @param data
+     * @return
+     */
     public ResponseEntity fullSearchProjet(Map<String, Object> data) {
-        String[] matchArray = {"description", "attachment.content","attachment.title"}; //TODO change "file" attribute
+        /**
+         * matchArray contains fields we want to match
+         * termArray contains fields on which we want to excute a termSearch request
+         */
+        String[] matchArray = {"description", "attachment.content","attachment.title"};
         String[] termArray = {"type", "categorie", "client", "duree"
                 , "chefDuProjet", "equipe", "uploadedBy.nom", "uploadedBy.prenom"};
         SearchRequest searchRequest = new SearchRequest(INDEX);

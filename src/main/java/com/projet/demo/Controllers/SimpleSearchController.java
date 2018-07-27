@@ -14,15 +14,29 @@ import java.util.Map;
 public class SimpleSearchController {
     @Autowired
     SearchService searchService;
-    @GetMapping("/{search}")
-    public ResponseEntity search(@PathVariable String search){
-        Map<String,Object> resp=(Map<String,Object>)searchService.search(search).getBody();
-        return new ResponseEntity(resp,HttpStatus.OK);
 
-    }
-    @CrossOrigin(origins="*")
+    /**
+     * this is the search method that is responsible of catching all search request
+     * the mapping to access this POST methode is {baseURL}/SimpleSearch/Advanced
+     *
+     * @param data the JSON object sent to this method must be in this form:
+     *             {
+     *             "type":"example",
+     *             "data":{
+     *             "searchField1":"searchValue1",
+     *             "searchField2":"searchValue2",
+     *             .
+     *             .
+     *             .
+     *             "searchFieldN":"searchValueN"
+     *
+     *             }
+     *             }
+     * @return  the method returns a array containing all the hits including their scores and highlights
+     */
+    @CrossOrigin(origins = "*")
     @PostMapping("/Advanced")
-    public ResponseEntity advancedSearch(@RequestBody Map<String,Object> data){
+    public ResponseEntity advancedSearch(@RequestBody Map<String, Object> data) {
         return searchService.fullSearch(data);
     }
 

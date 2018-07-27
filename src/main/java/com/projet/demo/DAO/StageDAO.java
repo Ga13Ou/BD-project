@@ -24,6 +24,9 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * this class is the Data Access Object for the model Stage
+ */
 @Repository
 public class StageDAO {
     @Value("${ES.AppIndex}")
@@ -46,8 +49,7 @@ public class StageDAO {
         try {
              indexResponse = restHighLevelClient.index(indexRequest);
             System.out.println(indexResponse);
-            //TODO remove this log after test
-            System.out.println("this is the id: " + stage.get_id());
+
             return new ResponseEntity(indexRequest,HttpStatus.OK);
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
@@ -58,10 +60,18 @@ public class StageDAO {
             return new ResponseEntity(indexRequest,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    /**
+     * this is the method that executes the search for the Stage documents
+     * @param data
+     * @return
+     */
     public ResponseEntity fullSearchStage(Map<String, Object> data) {
+        /**
+         * matchArray contains fields we want to match
+         * termArray contains fields on which we want to excute a termSearch request
+         */
         String[] matchArray = {"intituleSujet", "objectifProjet",
-                "contexteProblematique", "retombeesAttendues",  "attachment.content","attachment.title"}; //TODO change "file" attribute
+                "contexteProblematique", "retombeesAttendues",  "attachment.content","attachment.title"};
         String[] termArray = {"type", "etablissement", "candidat.nom", "candidat.prenom", "domainePrincipal"
                 , "technologie", "encadreurUniversitaire", "encadreurEntreprise", "uploadedBy.nom", "uploadBy.prenom","note"};
         SearchRequest searchRequest = new SearchRequest(INDEX);

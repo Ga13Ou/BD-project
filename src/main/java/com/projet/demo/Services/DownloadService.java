@@ -22,6 +22,12 @@ public class DownloadService {
     private RestHighLevelClient highLevelClient;
     @Autowired
     ObjectMapper objectMapper;
+
+    /**
+     * this method is responsible for accessing the DB to retrive a document with a specific id for download
+     * @param id
+     * @return
+     */
     public ResponseEntity getFileById(String id) {
         GetRequest getRequest=new GetRequest(INDEX,"_all",id);
         Map<String,String> response=new HashMap<String,String>();

@@ -24,6 +24,13 @@ public class DownloadController {
     @Value("${upload.dir}")
     private String UPLOAD_FOLDER;
 
+
+    /**
+     *
+     * @param id represent the id of the file to download
+     *           the mapping to access this GET method is "{baseURL}/download/{id}
+     * @return it returns the file to download
+     */
     @GetMapping("/{id}")
     @CrossOrigin(origins="*")
     public ResponseEntity downloadFileById(@PathVariable String id) {

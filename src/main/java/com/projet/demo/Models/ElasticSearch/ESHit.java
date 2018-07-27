@@ -6,6 +6,16 @@ import org.elasticsearch.search.SearchHit;
 
 import java.util.*;
 
+/**
+ * this class represent the structure of a HIT sent as a response after a search request
+ * it contains :
+ *      score
+ *      highlight which is a table of fragments for every highlighted field
+ *      source which contains the data returned after search
+ *
+ *      you have to initialize this object with a SearchHit object using the init(hit) method
+ *
+ */
 public class ESHit {
     private float _score;
     private Map<String,ArrayList<String>> highlights=new HashMap<String, ArrayList<String>>();

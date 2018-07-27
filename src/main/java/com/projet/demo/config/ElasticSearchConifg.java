@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.context.annotation.Configuration;
 
-
+/**
+ * this class contains the configuration of the elasticsearch high level client
+ * server properties can be found in properties file
+ */
 @Configuration
 public class ElasticSearchConifg extends AbstractFactoryBean {
 

@@ -9,14 +9,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+/**
+ * this class contains small extra algorithms needed to solve small problems ;)
+ */
 @Service
 public class ExtraAlgos {
     @Autowired
     ObjectMapper objectMapper;
+    /**
+     * contains the allowed uploaded file extensions
+     */
     ArrayList<String> allowedExtensions = new ArrayList<String>(Arrays.asList("doc", "docx", "ppt", "PPTX", "CSV"
             , "log", "ODT", "xlsx", "xls", "pdf"));
 
-    //get an object when the key is like this "key1.key2.key3"
+
+    /**
+     * get an object when the key is like this "key1.key2.key3"
+     * @param map
+     * @param compositeKey
+     * @return the value contained in the JSON object for the composite key, or null if it doesnt exist
+     */
     public String getDeepKeyFromMap(Map<String, Object> map, String compositeKey) {
         String[] deepKey = compositeKey.split("\\.");    //escaping the "." cause it  means any char in regex
         if (deepKey.length == 1) {
@@ -34,7 +46,11 @@ public class ExtraAlgos {
     }
 
 
-    //restrict file extensions
+    /**
+     * restrict file extensions
+     * @param file
+     * @return if the file is allowed to be uploaded or not
+     */
     public boolean isAllowed(MultipartFile file) {
         String [] fileName=file.getOriginalFilename().split("\\.");
         String extension=fileName[fileName.length-1];

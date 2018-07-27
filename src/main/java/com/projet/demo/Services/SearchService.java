@@ -32,29 +32,11 @@ public class SearchService {
     @Value("${ES.AppIndex}")
     String INDEX;
 
-    public ResponseEntity search(String key) {
-        SearchRequest searchRequest = new SearchRequest(INDEX);
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MultiMatchQueryBuilder multiMatchQueryBuilder = new MultiMatchQueryBuilder(key, "file", "uploadedBy.nom");
-        multiMatchQueryBuilder.type(MultiMatchQueryBuilder.Type.PHRASE_PREFIX);
-        searchSourceBuilder.query(multiMatchQueryBuilder);
-        searchRequest.source(searchSourceBuilder);
-        Map<String, Object> response = new HashMap<String, Object>();
-        try {
-            SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
-            SearchHits hits = searchResponse.getHits();
-            response.put("status", 0);
-            response.put("body", hits.getHits());
-
-
-            return new ResponseEntity(response, HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-            response.put("status", 1);
-            response.put("message", "Problem connecting to the DB");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-        }
-    }
+    /**
+     * this is the search service method, it redirect the search request to the right DAO
+     * @param data
+     * @return
+     */
     public ResponseEntity fullSearch(Map<String,Object> data){
         if(data.get("type")!=null &&((String)data.get("type")).equalsIgnoreCase("stage"))
             return stageDAO.fullSearchStage((Map<String,Object>)data.get("data"));

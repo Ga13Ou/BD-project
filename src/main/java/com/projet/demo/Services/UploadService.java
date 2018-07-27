@@ -33,16 +33,14 @@ public class UploadService {
     @Autowired
     private EvenementDAO evenementDAO;
     @Autowired
-    private DocumentContentService documentContentService;
-    @Autowired
     private ExtraAlgos extraAlgos;
 
-    //TODO methode to remove after test
-    public void test() {
-        java.io.File file = new java.io.File(".");
-        System.out.println(UPLOAD_FOLDER);
-
-    }
+    /**
+     * this method is used to upload a certain file to a certain path
+     * @param file
+     * @param savingPath
+     * @return
+     */
 
     public Map<String, Object> storeUtil(MultipartFile file, String savingPath) {
         Map<String, Object> response = new HashMap<String, Object>();
@@ -57,6 +55,8 @@ public class UploadService {
         }
         else{
             byte[] bytes;
+            //TODO add a unique ID to the file name while uploading it so that it doesn't create a problem if two files have the same name
+
             try {
                 //storing the file
                 bytes = file.getBytes();
@@ -79,31 +79,13 @@ public class UploadService {
 
     }
 
-    //this method is for local file upload testing
-    public Map<String, Object> store(MultipartFile file) {
-        return this.storeUtil(file, UPLOAD_FOLDER + file.getOriginalFilename());
 
-    }
-
-    public Map<String, Object> storeAndIndex(MultipartFile file, Stage stage) {
-        Map<String, Object> response = store(file);
-        if (response.get("status").equals(new Integer(0))) {
-            stage.setPath(UPLOAD_FOLDER + file.getOriginalFilename());    //TODO change when I pass to a remote storage location
-            byte[] bytes;
-            try {
-                //Encoding the file to base 64
-                bytes = file.getBytes();
-                String encodedFile = Base64Utils.encodeToString(bytes);
-                stage.setFile(encodedFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        response.put("ES_Response", stageDAO.indexDocument(stage));
-        return response;
-    }
-
+    /**
+     * this method is used to index the document in elasticSearch using the right DAO
+     * @param stage
+     * @param file
+     * @return
+     */
     public Map<String, Object> addStage(Stage stage, MultipartFile file) {
         Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "/StageFiles/" + file.getOriginalFilename());
         if (response.get("status").equals(new Integer(0))) {
@@ -112,7 +94,7 @@ public class UploadService {
             try {
                 //Encoding the file to base 64
                 bytes = file.getBytes();
-                String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
+                String encodedFile = Base64Utils.encodeToString(bytes);
                 /*String encodedFile=documentContentService.getDocumentContent(bytes);*/
                 stage.setFile(encodedFile);
             } catch (IOException e) {
@@ -125,6 +107,12 @@ public class UploadService {
 
     }
 
+    /**
+     * this method is used to index the document in elasticSearch using the right DAO
+     * @param projet
+     * @param file
+     * @return
+     */
     public Map<String, Object> addProjet(Projet projet, MultipartFile file) {
         Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "/ProjetFiles/" + file.getOriginalFilename());
         if (response.get("status").equals(new Integer(0))) {
@@ -133,7 +121,7 @@ public class UploadService {
             try {
                 //Encoding the file to base 64
                 bytes = file.getBytes();
-                String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
+                String encodedFile = Base64Utils.encodeToString(bytes);
                 /*String encodedFile=documentContentService.getDocumentContent(bytes);*/
                 projet.setFile(encodedFile);
             } catch (IOException e) {
@@ -146,6 +134,12 @@ public class UploadService {
 
     }
 
+    /**
+     * this method is used to index the document in elasticSearch using the right DAO
+     * @param evenement
+     * @param file
+     * @return
+     */
     public Map<String, Object> addEvenement(Evenement evenement, MultipartFile file) {
         Map<String, Object> response = storeUtil(file, UPLOAD_FOLDER + "/EvenementFiles/" + file.getOriginalFilename());
         if (response.get("status").equals(new Integer(0))) {
@@ -154,7 +148,7 @@ public class UploadService {
             try {
                 //Encoding the file to base 64
                 bytes = file.getBytes();
-                String encodedFile = Base64Utils.encodeToString(bytes); //TODO use this before deploying to the server running mapper-attachment
+                String encodedFile = Base64Utils.encodeToString(bytes);
                 /*String encodedFile=documentContentService.getDocumentContent(bytes);*/
                 evenement.setFile(encodedFile);
             } catch (IOException e) {
