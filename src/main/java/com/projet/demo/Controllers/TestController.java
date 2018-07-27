@@ -15,6 +15,7 @@ public class TestController {
     @Autowired
     UserService userService;
 @GetMapping("/")
+@CrossOrigin(origins="*")
 public String Hello(){
     System.out.println("application is working!");
     return "application is working";

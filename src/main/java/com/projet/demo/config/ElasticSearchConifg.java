@@ -21,6 +21,9 @@ public class ElasticSearchConifg extends AbstractFactoryBean {
     private String clusterName;
     private RestHighLevelClient restHighLevelCLient;
 
+    @Value("${ES.BD.ADDRESS}")
+    private String ServerAddress;
+
     @Override
     public void destroy(){
         try{
@@ -47,8 +50,8 @@ public class ElasticSearchConifg extends AbstractFactoryBean {
     private RestHighLevelClient buildClient(){
         try{
             restHighLevelCLient= new RestHighLevelClient(RestClient.builder(
-                    new HttpHost("localhost",9200,"http"),
-                    new HttpHost("localhost",9201,"http")
+                    new HttpHost(ServerAddress,9200,"http"),
+                    new HttpHost(ServerAddress,9201,"http")
             ));
         }catch(Exception e){
             LOG.error(e.getMessage());

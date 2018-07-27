@@ -37,27 +37,26 @@ public class StageDAO {
     @Autowired
     private ExtraAlgos extraAlgos;
 
-    public Stage indexDocument(Stage stage) {
+    public ResponseEntity indexDocument(Stage stage) {
         stage.set_id(UUID.randomUUID().toString());
         Map dataMap = objectMapper.convertValue(stage, Map.class);
         IndexRequest indexRequest = new IndexRequest(INDEX, TYPE, stage.get_id()).source(dataMap);
         indexRequest.setPipeline("attachment");
+        IndexResponse indexResponse=null;
         try {
-            IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
+             indexResponse = restHighLevelClient.index(indexRequest);
             System.out.println(indexResponse);
             //TODO remove this log after test
             System.out.println("this is the id: " + stage.get_id());
+            return new ResponseEntity(indexRequest,HttpStatus.OK);
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
             e.printStackTrace();
-
+            return new ResponseEntity(indexRequest,HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IOException ex) {
             ex.getLocalizedMessage();
+            return new ResponseEntity(indexRequest,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        stage.setFile(null);
-        return stage;
-
-
     }
 
     public ResponseEntity fullSearchStage(Map<String, Object> data) {
